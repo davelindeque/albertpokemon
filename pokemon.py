@@ -11,6 +11,8 @@ class Trainer:
         self.name = name
         self.pokedex = pokedex
 
+#Create Pokemon class
+
 class Pokemon:
     name = ''
     element = ''
@@ -24,7 +26,6 @@ class Pokemon:
         self.weakness = weakness
         self.health = health
         self.attacks = attacks
-        
 
 
 
