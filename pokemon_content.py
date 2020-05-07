@@ -25,6 +25,9 @@ class Pokemon:
         self.health = health
         self.attacks = attacks
 
+    def __repr__(self):
+        return self.name
+
 
 
 

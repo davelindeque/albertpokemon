@@ -3,6 +3,7 @@
 
 from random import randrange
 from PyInquirer import prompt
+import sys 
 from pprint import pprint
 import pokemon_content 
 from pokemon_content import Pokemon, pokeart
@@ -36,7 +37,13 @@ blastoise = Pokemon('Blastoise', 'Water', 'Grass', 10, [{'attack_name' : 'Water 
 charmeleon = Pokemon('Charmeleon', 'Fire', 'Water', 10, [{'attack_name' : 'Ember', 'attack_type' : 'Fire'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
 venusaur = Pokemon('Venusaur', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
 
-print(charmander.attacks)
+#print(charmander.attacks)
+
+#Create wild Pokemons and also player pokedex.
+
+wild_pokemon = [charmander, squirtle, bulbasaur, flareon, vaporeon, leafeon, ivysaur, charizard, wartotle, blastoise, charmeleon, venusaur]
+pokedex = []
+
 
 print("""
 
@@ -72,27 +79,56 @@ while True:
     else:
     	print("Please enter your name, comprised of letters only.")
 
+print('Welcome {}, your destiny awaits.'.format(username))
 
-print(username)
-
-
-
-#print(name)
+#Using PyInquirer to allow selection of Pokemon.  
 
 questions = [
     {
         'type': 'list',
         'name': 'intro_pokemon',
-        'message': 'What do you want to do?',
-        'choices': [
-            'Order a pizza',
-            'Make a reservation',
-            'Talk to the receptionist']
+        'message': '{}, please select a Pokemon to begin:'.format(username),
+        'choices': [pokemon.name for pokemon in wild_pokemon]
     }
 ]
 
 answers = prompt(questions)
 
-pprint(answers)
+choice = answers['intro_pokemon']
+
+for i,pokemon in enumerate(wild_pokemon):
+    if choice == pokemon.name:
+        pokedex.append(wild_pokemon.pop(i))
+        break
+
+print('Great, you selected {}. Great choice {}!'.format(pokedex[0],username))
+
+pokemon_content.pokeart(pokedex[0].name.lower())
+
+
+#print(wild_pokemon)
+
+step1 = [
+    {
+        'type': 'list',
+        'name': 'step1_choice',
+        'message': 'What would you like to do?',
+        'choices': ['Catch Pokemon', 'Quit']
+    }
+]
+
+answers = prompt(step1)
+choice = answers['step1_choice']
+
+if choice == 'Catch Pokemon':
+#    battle()
+    pass
+elif choice == 'Quit':
+    sys.exit(0)
+
+
+
+#pprint(answers)
+
 
 pokemon_content.pokeart("bulbasaur")
