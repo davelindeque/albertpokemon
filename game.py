@@ -6,20 +6,35 @@ from PyInquirer import prompt
 from pprint import pprint
 import pokemon_content 
 from pokemon_content import Pokemon, pokeart
-from playsound import playsound
+import simpleaudio as sa
 
-playsound('pokemonsong.mp3')
+
+
+"""Play Pokemon theme song throughout. simpleaudio is an easy-to-use audio package to play WAV files. 
+Originally, I tried playsound, however, that requires AppKit dependencies, while simpleaudio is dependency-free."""
+
+wave_obj = sa.WaveObject.from_wave_file("pokemonsong.wav")
+play_obj = wave_obj.play()
+
+
+
 #use this to randomly deal damage
-
 #print(randrange(1,3)/2)
 
 #Initiate Pokemon
 
-charmander = Pokemon('Charmander', 'Fire', 'Water', 10, [{'Ember' : 'Fire'},{'Tackle' : 'Normal'}])
-squirtle = Pokemon('Squirtle', 'Water', 'Grass', 10, [{'Water Gun' : 'Water'}, {'Tackle' : 'Normal'}])
-bulbasaur = Pokemon('Bulbasaur', 'Grass', 'Fire', 10, [{'Vine Whip' : 'Grass'}, {'Tackle' : 'Normal'}])
-#flareon
-
+charmander = Pokemon('Charmander', 'Fire', 'Water', 10, [{'attack_name' : 'Ember', 'attack_type' : 'Fire'},{'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+squirtle = Pokemon('Squirtle', 'Water', 'Grass', 10, [{'attack_name' : 'Water Gun', 'attack_type' : 'Water'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+bulbasaur = Pokemon('Bulbasaur', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+flareon = Pokemon('Flareon', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+vaporeon = Pokemon('Vaporeon', 'Water', 'Grass', 10, [{'attack_name' : 'Water Gun', 'attack_type' : 'Water'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+leafeon = Pokemon('Leafeon', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+ivysaur = Pokemon('Ivysaur', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+charizard = Pokemon('Charizard', 'Fire', 'Water', 10, [{'attack_name' : 'Ember', 'attack_type' : 'Fire'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+wartotle = Pokemon('Wartotle', 'Water', 'Grass', 10, [{'attack_name' : 'Water Gun', 'attack_type' : 'Water'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+blastoise = Pokemon('Blastoise', 'Water', 'Grass', 10, [{'attack_name' : 'Water Gun', 'attack_type' : 'Water'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+charmeleon = Pokemon('Charmeleon', 'Fire', 'Water', 10, [{'attack_name' : 'Ember', 'attack_type' : 'Fire'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
+venusaur = Pokemon('Venusaur', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip', 'attack_type' : 'Grass'}, {'attack_name' : 'Tackle', 'attack_type' : 'Normal'}])
 
 print(charmander.attacks)
 
