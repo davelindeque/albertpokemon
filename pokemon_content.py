@@ -1,6 +1,8 @@
 #David Lindeque
 #module made where the pokemon class will be created and stored. In addition, all ASCII art for Pokemon will be stored here. 
 
+
+
 #Trainer class
 
 class Trainer:

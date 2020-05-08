@@ -1,7 +1,7 @@
 # albertpokemon
 Pokemon Python Game 
 
-Terminal-based Pokemon game as part of PM Onboarding process.
+Terminal-based Pokemon game as part of PM Onboarding training.
 
 Interesting Notes:
 
