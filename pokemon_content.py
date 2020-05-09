@@ -1,5 +1,28 @@
 #David Lindeque
 #module made where the pokemon class will be created and stored. In addition, all ASCII art for Pokemon will be stored here. 
+from random import randrange
+
+def determine_age(year_of_birth):
+  return 2020 - year_of_birth
+
+
+def battle(wild_pokemon):
+    opponent_index = randrange(0, len(wild_pokemon) -1)
+    opponent = wild_pokemon[opponent_index]
+    opponent_name = wild_pokemon[opponent_index].name
+    print("You've encountered a wild {}.".format(opponent_name))
+    pokeart(opponent_name.lower())
+    print(opponent_name.upper())
+    print(' ')
+    opponent_health_inverse = 10 - wild_pokemon[opponent_index].health
+    print('Health: |' + '[]' * wild_pokemon[opponent_index].health + ' ' * opponent_health_inverse + '|')
+    print('Element: {}'.format(wild_pokemon[opponent_index].element))
+    print('Weakness: {}'.format(wild_pokemon[opponent_index].weakness))
+    print(' ')
+    return opponent
+
+
+
 
 
 
