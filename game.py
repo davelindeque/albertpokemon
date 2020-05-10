@@ -240,12 +240,10 @@ def attack_choice(poke_range):
 
 ##############################
 
-
-def battle_attack(att, opp, poke_range, wild_range):
-    print('works')
+def battle_attack(att, opp, pokedex):
     battle_mode = True
     while battle_mode == True:
-        if len(poke_range) == 1:
+        if len(pokedex) == 1:
 
             questions1 = [
                         {
@@ -277,14 +275,15 @@ def battle_attack(att, opp, poke_range, wild_range):
             print('')
             print('You got away safely!')
 
-            for i, poke in enumerate(poke_range):
-                if opp.name == poke.name:
-                    poke_range[i].health = 10
+            for poke in pokedex:
+                if att.name == poke.name:
+                    poke.health = 10
                     break
             battle_mode = False
+            return
 
         elif choice2 == 'Switch Pokemon':
-            chosen = attack_choice(poke_range)
+            att = attack_choice(pokedex)
 
         elif choice2 == 'Fight':
             opponent_element = opp.element
@@ -353,13 +352,15 @@ def battle_attack(att, opp, poke_range, wild_range):
                 print('')
                 print('{} health: {}'.format(opp.name, opp.health))
                 print('')
-                for i, poke in enumerate(poke_range):
+
+                for poke in pokedex:
                     if att.name == poke.name:
-                        poke_range(i).health = 10
-                for j, wild in enumerate(wild_range):
-                    if opp.name == poke.name:
-                        wild_range(j).health = 10
-                        poke_range.append(wild_range.pop(j))
+                        poke.health = 10
+                for j, wild in enumerate(wild_pokemon):
+                    if opp.name == wild.name:
+                        wild.health = 10
+                        pokedex.append(wild_pokemon.pop(j))
+                
                 battle_mode = False
 
 
@@ -383,46 +384,48 @@ def battle_attack(att, opp, poke_range, wild_range):
 
             
             if att.health == 0 and opp.health > 0:
-                if len(poke_range) == 1:
-                    poke_range = []
+                if len(pokedex) == 1:
+                    pokedex = []
                     print('Winner: {}'.format(opp.name))
                     battle_mode = False
 
                 else:
-                    for i, poke in enumerate(poke_range):
+                    for i, poke in enumerate(pokedex):
                         if att.name == poke.name:
-                            poke_range(i).health = 10
-                            wild_range.append(poke_range.pop(i))
+                            poke.health = 10
+                            wild_pokemon.append(pokedex.pop(i))
                         break
-                    for j, wild in enumerate(wild_range):
+                    for j, wild in enumerate(wild_pokemon):
                         if opp.name == wild.name:
-                            wild_range(j).health = 10
+                            wild.health = 10
                         break
+                    
                     battle_mode = False
                             
 
 
 
             elif att.health > 0 and opp.health == 0:
-                for i, poke in enumerate(poke_range):
+                for i, poke in enumerate(pokedex):
                     if att.name == poke.name:
-                        poke_range(i).health = 10
+                        poke.health = 10
                     break
 
-                for j, wild in enumerate(wild_range):
+                for j, wild in enumerate(wild_pokemon):
                     if opp.name == wild.name:
-                        wild_range(j).health = 10
-                        poke_range.append(wild_range.pop(j))
+                        wild.health = 10
+                        pokedex.append(wild_pokemon.pop(j))
                     break
 
                 print('Winner: {}'.format(att.name))
                 print('')
                 print('Well done {}, you caught {}.'.format(username, opp.name))
                 print('')
+            
 
                 battle_mode = False
 
-    return [poke_range, wild_range]
+     
 
 
 
@@ -430,13 +433,13 @@ def battle_attack(att, opp, poke_range, wild_range):
 
 
 
-
+#pokedex global variable assigned before this at top of file.
 
 
 ##############################
 
 
-def homemenu(poke_list, wild_list):
+def homemenu():
 
 
     step1 = [
@@ -451,32 +454,34 @@ def homemenu(poke_list, wild_list):
     answers = prompt(step1)
     choice = answers['step1_choice']
 
-    pokedex_count = len(poke_list)
+    pokedex_count = len(pokedex)
 
     if choice == 'Catch Pokemon':
         print("Let's begin...")
         time.sleep(1)
         print('In order to catch Pokemon, we need to battle!')
         time.sleep(1)
-        opponent = pokemon_content.battle(wild_list)
+        opponent = pokemon_content.battle(wild_pokemon)
 
 
-        if len(poke_range) == 1:
-            chosen = poke_list[0]
+        if pokedex_count == 1:
+            chosen = pokedex[0]
             print("{}, you currently only have 1 Pokemon, {}.".format(username, chosen.name))
             print("Go get 'em {}!".format(chosen.name))
             print('')
-            battle_result = battle_attack(chosen, opponent, poke_list, wild_list)
-            poke_range = battle_result[0]
-            wild_pokemon = battle_result[1]
+            result = battle_attack(chosen, opponent, pokedex)
+            pokedex = result[0]
+            wild_pokemon = result[1]
+
 
 
 
         else:
-            chosen = pokemon_content.attack_choice(pokedex)
-            battle_result = battle_attack(chosen, opponent, pokedex, wild_pokemon)
-            pokedex = battle_result[0]
-            wild_pokemon = battle_result[1]
+            chosen = attack_choice(pokedex)
+            result = battle_attack(chosen, opponent, pokedex)
+            pokedex = result[0]
+            wild_pokemon = result[1]
+            
                 
     elif choice == 'Quit':
         print('Thanks for playing {}!'.format(username))
@@ -522,7 +527,7 @@ ____   ___.______________________________ _______________.___._._.
         break
 
 
-    homemenu(pokedex, wild_pokemon)
+    homemenu()
 
 
 
