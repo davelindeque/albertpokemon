@@ -3,37 +3,8 @@
 from random import randrange
 from PyInquirer import prompt
 
-############################
-'''
-def attack_choice(poke_range):
-    poke_attack_list = [pokemon.name for pokemon in poke_range]
-    poke_attack_list.append('Back')
-    questions3 = [
-        {
-        'type': 'list',
-        'name': 'fightchoice1',
-        'message': 'Which pokemon do you want to use?',
-        'choices': poke_attack_list
-        }
-        ]
-    answers = prompt(questions3)
-    choice2 = answers['fightchoice1']
-
-    if choice2 == 'Back':
-        pass
-
-    for i, poke in pokedex:
-        if choice2 == poke.name:
-            chosen = pokedex[i]
-            print('')
-            print('You have selected: {}'.format(choice2))
-            return chosen
-
-'''
-
-
-##############################
-
+#############################
+# battle selects the opponent.
 
 def battle(wild_pokemon):
     opponent_index = randrange(0, len(wild_pokemon) -1)
@@ -52,6 +23,7 @@ def battle(wild_pokemon):
 
 
 #############################
+# battledamage is attack point calculator.
 
 def battledamage(elementattack, oppelementattack, chosen, opponent):
 
@@ -76,20 +48,8 @@ def battledamage(elementattack, oppelementattack, chosen, opponent):
     return [attdamage, oppattdamage]
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return [x,x]
+#############################
+# hint was an idea where users get 1 hint throughout the game.
 
 
 '''
@@ -160,9 +120,7 @@ Use your {attack1} to deal double damage!
 '''
 
 
-
 ############################
-
 #Trainer class
 
 class Trainer:
@@ -193,7 +151,6 @@ class Pokemon:
 
 
 ############################
-
 #Pokemon character art printer.
 
 

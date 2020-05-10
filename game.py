@@ -12,11 +12,9 @@ from pokemon_content import Pokemon, pokeart, battle
 import simpleaudio as sa
 
 
-"""Play Pokemon theme song throughout. simpleaudio is an easy-to-use, dependency-free audio package to play WAV files.""" 
-
-
-#wave_obj = sa.WaveObject.from_wave_file("pokemonsong.wav")
-#play_obj = wave_obj.play()
+#Play Pokemon theme song
+wave_obj = sa.WaveObject.from_wave_file("pokemonsong.wav")
+play_obj = wave_obj.play()
 
 
 #Initiate Pokemon
@@ -483,12 +481,8 @@ def homemenu():
         pokedex_portal()
 
 
-
-
-
-
-
-
+##############################
+# Game logic
 
 
 playing = True
@@ -523,74 +517,4 @@ ____   ___.______________________________ _______________.___._._.
 
 
 
-
-'''
-
-def hint():
-
-    if hint < 1:
-        print('No hints left! Returning to battle menu.')
-        time.sleep(2)
-        battlemenu()
-
-    elif hint == 1:
-        print("{}, in this game, you get one hint - this is it!".format(username))
-        print(" ")
-        attack1 = only_pokemon.attacks[0]['attack_name']
-        pokeelement = only_pokemon.element
-        opponent_element = opponent.element
-        opponent_weakness = opponent.weakness
-
-        if pokeelement == opponent_weakness:
-            if pokeelement == opponent_element:
-                print(f"""Your Pokemon, {only_pokemon}, has special attributes.
-Every Pokemon has a special element. 
-This element determines attack profile and advantage.
-With that, every Pokemon has a weakness...
-
-{only_pokemon} has the following attacks:
-
-{attack1} - uses {only_pokemon}'s {pokeelement} element as it's attack type.
-{attack1} - normal move type.
-
-If you choose an attack that has an advantage over your opponent, you deal double damage.
-An advantage is when your attack's element matches your opponent's weakness. 
-
-If your attack uses an element that your opponent is made from, your attacks is 50% less powerful. 
-
-Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness is {opponent_weakness}.
-
-Your {attack1} is comprised of the same element as your opponent's element, {opponent_element}.
-
-Using this attack will deal up to 50% less damage! We recommend using Tackle.
-
-                        """)
-                hint -= 1
-                print(' ')
-                battlemenu()
-
-            else: 
-                print(f"""Your Pokemon, {only_pokemon}, has special attributes.
-Every Pokemon has a special element. 
-This element determines attack profile and advantage.
-With that, every Pokemon has a weakness...
-
-{only_pokemon} has the following attacks:
-
-{attack1} - uses {only_pokemon}'s {pokeelement} element as it's attack type.
-{attack1} - normal move type.
-
-If you choose an attack that has an advantage over your opponent, you deal double damage.
-An advantage is when your attack's element matches your opponent's weakness. 
-
-If your attack uses an element that your opponent is made from, your attacks is 50% less powerful. 
-
-Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness is {opponent_weakness}.
-
-Use your {attack1} to deal double damage!
-                            """)
-
-
-
-'''
     
