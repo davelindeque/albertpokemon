@@ -205,18 +205,52 @@ def pokedex_portal():
 
 ##############################
 
-def battle_attack():
+
+def attack_choice(poke_range):
+    if len(poke_range) == 1:
+        selected = poke_range[0]
+
+    else:
+
+        poke_attack_list = [pokemon.name for pokemon in poke_range]
+        poke_attack_list.append('Back')
+        questions3 = [
+            {
+            'type': 'list',
+            'name': 'fightchoice1',
+            'message': 'Which pokemon do you want to use?',
+            'choices': poke_attack_list
+            }
+            ]
+        answers = prompt(questions3)
+        choice2 = answers['fightchoice1']
+
+        if choice2 == 'Back':
+            pass
+
+        for i, poke in poke_range:
+            if choice2 == poke.name:
+                selected = pokedex[i]
+                print('')
+                print('You have selected: {}'.format(choice2))
+                return selected
+                break
+
+
+
+def battle_attack(att, opp):
     print('works')
     battle_mode = True
+#    attack_choice(pokedex)
     while battle_mode == True:
-        if pokecount == 1:
+        if len(pokedex) == 1:
 
             questions1 = [
                         {
                         'type': 'list',
                         'name': 'fightchoice',
-                        'message': '{}, choose an attack:'.format(user),
-                        'choices': ['Fight', 'Run']
+                        'message': 'Battle Menu',
+                        'choices': ['Fight', 'Run'],
                         }
                         ]
             answers = prompt(questions1)
@@ -228,8 +262,8 @@ def battle_attack():
                         {
                         'type': 'list',
                         'name': 'fightchoice',
-                        'message': '{}, choose an attack:'.format(user),
-                        'choices': ['Fight', 'Switch Pokemon','Run']
+                        'message': 'Battle Menu',
+                        'choices': ['Fight', 'Switch Pokemon','Run'],
                         }
                         ]
             answers2 = prompt(questions2)
@@ -242,16 +276,105 @@ def battle_attack():
             print('You got away safely!')
 
             for i, poke in enumerate(pokedex):
-                if opponent.name == poke.name:
+                if opp.name == poke.name:
                     pokedex[i].health = 10
                     break
             battle_mode = False
 
         elif choice2 == 'Switch Pokemon':
-            chosen = pokemon_content.attack_choice(pokedex)
+            chosen = attack_choice(pokedex)
 
         elif choice2 == 'Fight':
+            opponent_element = opp.element
+            opponent_weakness = opp.weakness
+            opponent_attack_index = randrange(0,1)
+            opponent_attack = opp.attacks[opponent_attack_index]['attack_name']
+
+
+            if opponent_attack == "Ember":
+                oppattackelement = 'fire'
+
+            elif opponent_attack == "Vine Whip":
+                oppattackelement = "grass"
+
+            else:
+                oppattackelement = 'water'
+
+
+
+            attackchoice = [(att.attacks[0]['attack_name']), (att.attacks[1]['attack_name'])]
+            questions3 = [
+                        {
+                        'type': 'list',
+                        'name': 'attackchoice',
+                        'message': '{}, choose an attack:'.format(username),
+                        'choices': attackchoice,
+                        }
+                        ]
+            answers3 = prompt(questions3)
+            choice3 = answers3['attackchoice']
+
+            if choice3 == "Ember":
+                attackelement = 'fire'
+
+            elif choice3 == "Vine Whip":
+                attackelement = "grass"
+
+            else:
+                attackelement = 'water'
+
+            outcome = pokemon_content.battledamage(attackelement, oppattackelement, att, opp)
+
+            attdamage = outcome[0]
+            oppattdamage = outcome[1]
             
+            print('')
+            print('{} used {}, dealing {} damage.'.format(att.name, choice3, attdamage))
+            print('')
+            print('Opposing {} used {}, dealing {}.'.format(opp.name, opponent_attack, oppattdamage))
+            print('')
+
+            if len(pokedex) == 1:
+                pokedex[0].health -= oppattdamage
+                userhealth = pokedex[0].health
+
+            else:
+                for i, poke in enumerate(pokedex):
+                    if att.name == poke.name:
+                        pokedex[i].health -= oppattdamage
+                        userhealth = pokedex[0].health
+                    break
+
+
+            if len(wild_pokemon) == 1:
+                wild_pokemon[0].health -= attdamage
+                comphealth = wild_pokemon[0].health
+
+                
+
+            else:
+                for j, wild in enumerate(wild_pokemon):
+                    if opp.name == wild.name:
+                        wild_pokemon[j].health -= attdamage
+                        comphealth = wild_pokemon[j].health
+
+
+           
+
+            print('')
+            print('Score:')
+            print('')
+            print('{} health: {}'.format(att.name, userhealth))
+            print('')
+            print('{} health: {}'.format(opp.name, comphealth))
+
+
+
+
+
+
+
+
 
 
 
@@ -288,11 +411,13 @@ def homemenu():
             print("{}, you currently only have 1 Pokemon, {}.".format(username, chosen.name))
             print("Go get 'em {}!".format(chosen.name))
             print('')
-            battle_attack()
+            battle_attack(chosen, opponent)
+
+
 
         else:
             chosen = pokemon_content.attack_choice(pokedex)
-            battle_attack()
+            battle_attack(chosen, opponent)
                 
     elif choice == 'Quit':
         print('Thanks for playing {}!'.format(username))
@@ -343,48 +468,7 @@ ____   ___.______________________________ _______________.___._._.
 
 
 
-
-
-
-
-
-
-'''def battle():
-    upper_wild_indexlimit = int(len(wild_pokemon) - 1)
-    print(upper_wild_indexlimit)
-    opponent_index = randrange(0,upper_wild_indexlimit)
-    opponent = wild_pokemon[opponent_index]
-    opponent_name = wild_pokemon[opponent_index].name
-    print("You've encountered a wild {}.".format(opponent_name))
-    pokemon_content.pokeart(opponent_name.lower())
-    print(opponent_name.upper())
-    print(' ')
-    opponent_health_inverse = 10 - wild_pokemon[opponent_index].health
-    print('Health: |' + '[]' * wild_pokemon[opponent_index].health + ' ' * opponent_health_inverse + '|')
-    print('Element: {}'.format(wild_pokemon[opponent_index].element))
-    print('Weakness: {}'.format(wild_pokemon[opponent_index].weakness))
-    print(' ')'''
-
-def battle_menu():
-
-    questions1 = [
-                {
-                'type': 'list',
-                'name': 'fightchoice',
-                'message': '{}, choose an attack:'.format(username),
-                'choices': ['Fight', 'Run', 'Hint']
-                }
-                ]
-    answers = prompt(questions1)
-    choice2 = answers['fightchoice']
-
-    if choice2 == 'Fight':
-        pass
-
-    elif choice2 == 'Hint':
-        pass
-
-#battlemenu()
+'''
 
 def hint():
 
@@ -449,8 +533,8 @@ Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness 
 
 Use your {attack1} to deal double damage!
                             """)
-       
 
 
 
-        
+'''
+    

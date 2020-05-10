@@ -4,7 +4,7 @@ from random import randrange
 from PyInquirer import prompt
 
 ############################
-
+'''
 def attack_choice(poke_range):
     poke_attack_list = [pokemon.name for pokemon in poke_range]
     poke_attack_list.append('Back')
@@ -25,7 +25,11 @@ def attack_choice(poke_range):
     for i, poke in pokedex:
         if choice2 == poke.name:
             chosen = pokedex[i]
+            print('')
+            print('You have selected: {}'.format(choice2))
             return chosen
+
+'''
 
 
 ##############################
@@ -49,6 +53,46 @@ def battle(wild_pokemon):
 
 #############################
 
+def battledamage(elementattack, oppelementattack, chosen, opponent):
+
+    if elementattack == opponent.element:
+        attdamage = randrange(1,3)//2
+
+    elif elementattack == opponent.weakness:
+        attdamage = randrange(1,3)*2
+
+    else:
+        attdamage = randrange(1,3)
+
+    if oppelementattack == chosen.element:
+        oppdamage = randrange(1,3)//2
+
+    elif oppelementattack == chosen.weakness:
+        oppattdamage = randrange(1,3)*2
+
+    else:
+        oppattdamage = randrange(1,3)
+
+    return [attdamage, oppattdamage]
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return [x,x]
+
+
+'''
 
 def hint():
 
@@ -113,111 +157,7 @@ Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness 
 
 Use your {attack1} to deal double damage!
                             """)
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def battle_attack(user, pokecount, hintcount, fighter, enemy):
-    print('works')
-    battle_mode = True
-    while battle_mode == True:
-        if pokecount == 1:
-
-
-
-
-            questions1 = [
-                        {
-                        'type': 'list',
-                        'name': 'fightchoice',
-                        'message': '{}, choose an attack:'.format(user),
-                        'choices': ['Fight', 'Run', 'Hint']
-                        }
-                        ]
-            answers = prompt(questions1)
-            choice2 = answers['fightchoice']
-
-        else:
-
-            questions2 = [
-                        {
-                        'type': 'list',
-                        'name': 'fightchoice',
-                        'message': '{}, choose an attack:'.format(user),
-                        'choices': ['Fight', 'Switch Pokemon','Run', 'Hint']
-                        }
-                        ]
-            answers2 = prompt(questions2)
-            choice2 = answers2['fightchoice']
-
-        if choice2 == 'Hint':
-            print('works too')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+'''
 
 
 
