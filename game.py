@@ -240,7 +240,9 @@ def attack_choice(poke_range):
 
 ##############################
 
-def battle_attack(att, opp, pokedex):
+def battle_attack(att, opp):
+    global pokedex
+    global wild_pokemon
     battle_mode = True
     while battle_mode == True:
         if len(pokedex) == 1:
@@ -363,16 +365,6 @@ def battle_attack(att, opp, pokedex):
                 
                 battle_mode = False
 
-
-
-
-
-
-
-
-
-
-
             else:
                 print('')
                 print('Score:')
@@ -384,9 +376,9 @@ def battle_attack(att, opp, pokedex):
 
             
             if att.health == 0 and opp.health > 0:
+                print('Winner: {}'.format(opp.name))
                 if len(pokedex) == 1:
                     pokedex = []
-                    print('Winner: {}'.format(opp.name))
                     battle_mode = False
 
                 else:
@@ -406,16 +398,15 @@ def battle_attack(att, opp, pokedex):
 
 
             elif att.health > 0 and opp.health == 0:
-                for i, poke in enumerate(pokedex):
+                for poke in pokedex:
                     if att.name == poke.name:
                         poke.health = 10
-                    break
-
                 for j, wild in enumerate(wild_pokemon):
                     if opp.name == wild.name:
                         wild.health = 10
                         pokedex.append(wild_pokemon.pop(j))
-                    break
+                
+                
 
                 print('Winner: {}'.format(att.name))
                 print('')
@@ -440,6 +431,9 @@ def battle_attack(att, opp, pokedex):
 
 
 def homemenu():
+    global pokedex
+    global wild_pokemon
+
 
 
     step1 = [
@@ -469,18 +463,16 @@ def homemenu():
             print("{}, you currently only have 1 Pokemon, {}.".format(username, chosen.name))
             print("Go get 'em {}!".format(chosen.name))
             print('')
-            result = battle_attack(chosen, opponent, pokedex)
-            pokedex = result[0]
-            wild_pokemon = result[1]
+            battle_attack(chosen, opponent)
+          
 
 
 
 
         else:
             chosen = attack_choice(pokedex)
-            result = battle_attack(chosen, opponent, pokedex)
-            pokedex = result[0]
-            wild_pokemon = result[1]
+            battle_attack(chosen, opponent)
+            
             
                 
     elif choice == 'Quit':
