@@ -3,8 +3,7 @@
 # Albert Python Assignment
 
 from random import randrange
-from PyInquirer import promp
-t
+from PyInquirer import prompt
 import sys 
 import time
 from pprint import pprint
@@ -41,7 +40,7 @@ venusaur = Pokemon('Venusaur', 'Grass', 'Fire', 10, [{'attack_name' : 'Vine Whip
 
 wild_pokemon = [charmander, squirtle, bulbasaur, flareon, vaporeon, leafeon, ivysaur, charizard, wartotle, blastoise, charmeleon, venusaur]
 pokedex = []
-hint = int(1) 
+
 
 
 #Start-up flow begins:
@@ -145,7 +144,7 @@ def pokedex_portal():
         {
             'type': 'list',
             'name': 'pokedex_choice',
-            'message': '{}, please select a Pokemon to begin:'.format(username),
+            'message': '{}, please select a Pokemon to explore:'.format(username),
             'choices': choices_list
         }
     ]
@@ -206,7 +205,57 @@ def pokedex_portal():
 
 ##############################
 
+def battle_attack():
+    print('works')
+    battle_mode = True
+    while battle_mode == True:
+        if pokecount == 1:
 
+            questions1 = [
+                        {
+                        'type': 'list',
+                        'name': 'fightchoice',
+                        'message': '{}, choose an attack:'.format(user),
+                        'choices': ['Fight', 'Run']
+                        }
+                        ]
+            answers = prompt(questions1)
+            choice2 = answers['fightchoice']
+
+        else:
+
+            questions2 = [
+                        {
+                        'type': 'list',
+                        'name': 'fightchoice',
+                        'message': '{}, choose an attack:'.format(user),
+                        'choices': ['Fight', 'Switch Pokemon','Run']
+                        }
+                        ]
+            answers2 = prompt(questions2)
+            choice2 = answers2['fightchoice']
+
+        
+
+        if choice2 == 'Run':
+            print('')
+            print('You got away safely!')
+
+            for i, poke in enumerate(pokedex):
+                if opponent.name == poke.name:
+                    pokedex[i].health = 10
+                    break
+            battle_mode = False
+
+        elif choice2 == 'Switch Pokemon':
+            chosen = pokemon_content.attack_choice(pokedex)
+
+        elif choice2 == 'Fight':
+            
+
+
+
+##############################
 
 
 def homemenu():
@@ -224,13 +273,27 @@ def homemenu():
     answers = prompt(step1)
     choice = answers['step1_choice']
 
+    pokedex_count = len(pokedex)
+
     if choice == 'Catch Pokemon':
         print("Let's begin...")
         time.sleep(1)
         print('In order to catch Pokemon, we need to battle!')
         time.sleep(1)
-        pokemon_content.battle(wild_pokemon)
-        
+        opponent = pokemon_content.battle(wild_pokemon)
+
+
+        if len(pokedex) == 1:
+            chosen = pokedex[0]
+            print("{}, you currently only have 1 Pokemon, {}.".format(username, chosen.name))
+            print("Go get 'em {}!".format(chosen.name))
+            print('')
+            battle_attack()
+
+        else:
+            chosen = pokemon_content.attack_choice(pokedex)
+            battle_attack()
+                
     elif choice == 'Quit':
         print('Thanks for playing {}!'.format(username))
         sys.exit()
@@ -387,97 +450,6 @@ Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness 
 Use your {attack1} to deal double damage!
                             """)
        
-
-
-    if len(pokedex) == 1:
-        only_pokemon = pokedex[0]
-        print("{}, you currently only have 1 Pokemon, {}.".format(username, only_pokemon.name))
-        print("Go get 'em {}!".format(only_pokemon.name))
-        attack_name
-        questions = [
-                    {
-                        'type': 'list',
-                        'name': 'battle1choice',
-                        'message': '{}, what would you like to do?'.format(username),
-                        'choices': ['Fight', 'Run']
-                    }
-                ]
-
-        answers = prompt(questions)
-        choice = answers['battle1choice']
-        if choice == 'Fight':
-            battle_menu()
-
-        else:
-            wild_pokemon[opponent_index].health = 10
-            print(' ')
-            print('You got away safely.')
-            homemenu()
-
-
-
- #       else:
- #           print(' ')
-
-#            homemenu()
-
-
-
-
-
-
-
-
-
-"""Battle function with required logic for game to execute.
-def battle():
-    upper_wild_indexlimit = int(len(wild_pokemon) - 1)
-    print(upper_wild_indexlimit)
-    opponent_index = randrange(0,upper_wild_indexlimit)
-    opponent = wild_pokemon[opponent_index].name
-    print("You've encountered a wild {}.".format(opponent))
-    pokemon_content.pokeart(opponent.lower())
-    print(opponent.upper())
-    print(' ')
-    opponent_health_inverse = 10 - wild_pokemon[opponent_index].health
-    print('Health: |' + '[]' * wild_pokemon[opponent_index].health + ' ' * opponent_health_inverse + '|')
-    print('Element: {}'.format(wild_pokemon[opponent_index].element))
-    print('Weakness: {}'.format(wild_pokemon[opponent_index].weakness))
-    print(' ')
-
-    if len(pokedex) == 1:
-        only_pokemon = pokedex[0]
-        print("{}, you currently only have 1 Pokemon, {}.".format(username, only_pokemon.name))
-        print("Go get 'em {}!".format(only_pokemon.name))
-        questions = [
-                    {
-                        'type': 'list',
-                        'name': 'battle1choice',
-                        'message': '{}, what would you like to do?'.format(username),
-                        'choices': ['Fight', 'Run']
-                    }
-                ]
-
-        answers = prompt(questions)
-        choice = answers['battle1choice']
-        if choice == 'Fight':
-
-            questions1 = [
-                        {
-                        'type': 'list',
-                        'name': 'battle1choice',
-                        'message': '{}, what would you like to do?'.format(username),
-
-                        'choices': ['Fight', 'Run']
-                        }
-                    ]
-            pass
-        else:
-            print(' ')
-
-            homemenu()"""
-
-#battle()
 
 
 

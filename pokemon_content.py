@@ -1,9 +1,34 @@
 #David Lindeque
 #module made where the pokemon class will be created and stored. In addition, all ASCII art for Pokemon will be stored here. 
 from random import randrange
+from PyInquirer import prompt
 
-def determine_age(year_of_birth):
-  return 2020 - year_of_birth
+############################
+
+def attack_choice(poke_range):
+    poke_attack_list = [pokemon.name for pokemon in poke_range]
+    poke_attack_list.append('Back')
+    questions3 = [
+        {
+        'type': 'list',
+        'name': 'fightchoice1',
+        'message': 'Which pokemon do you want to use?',
+        'choices': poke_attack_list
+        }
+        ]
+    answers = prompt(questions3)
+    choice2 = answers['fightchoice1']
+
+    if choice2 == 'Back':
+        pass
+
+    for i, poke in pokedex:
+        if choice2 == poke.name:
+            chosen = pokedex[i]
+            return chosen
+
+
+##############################
 
 
 def battle(wild_pokemon):
@@ -22,9 +47,181 @@ def battle(wild_pokemon):
     return opponent
 
 
+#############################
+
+
+def hint():
+
+    if hint < 1:
+        print('No hints left! Returning to battle menu.')
+        time.sleep(2)
+        battlemenu()
+
+    elif hint == 1:
+        print("{}, in this game, you get one hint - this is it!".format(username))
+        print(" ")
+        attack1 = only_pokemon.attacks[0]['attack_name']
+        pokeelement = only_pokemon.element
+        opponent_element = opponent.element
+        opponent_weakness = opponent.weakness
+
+        if pokeelement == opponent_weakness:
+            if pokeelement == opponent_element:
+                print(f"""Your Pokemon, {only_pokemon}, has special attributes.
+Every Pokemon has a special element. 
+This element determines attack profile and advantage.
+With that, every Pokemon has a weakness...
+
+{only_pokemon} has the following attacks:
+
+{attack1} - uses {only_pokemon}'s {pokeelement} element as it's attack type.
+{attack1} - normal move type.
+
+If you choose an attack that has an advantage over your opponent, you deal double damage.
+An advantage is when your attack's element matches your opponent's weakness. 
+
+If your attack uses an element that your opponent is made from, your attacks is 50% less powerful. 
+
+Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness is {opponent_weakness}.
+
+Your {attack1} is comprised of the same element as your opponent's element, {opponent_element}.
+
+Using this attack will deal up to 50% less damage! We recommend using Tackle.
+
+                        """)
+                hint -= 1
+                print(' ')
+                battlemenu()
+
+            else: 
+                print(f"""Your Pokemon, {only_pokemon}, has special attributes.
+Every Pokemon has a special element. 
+This element determines attack profile and advantage.
+With that, every Pokemon has a weakness...
+
+{only_pokemon} has the following attacks:
+
+{attack1} - uses {only_pokemon}'s {pokeelement} element as it's attack type.
+{attack1} - normal move type.
+
+If you choose an attack that has an advantage over your opponent, you deal double damage.
+An advantage is when your attack's element matches your opponent's weakness. 
+
+If your attack uses an element that your opponent is made from, your attacks is 50% less powerful. 
+
+Your opponent, {opponent_name}, is made from {opponent_element}. Their weakness is {opponent_weakness}.
+
+Use your {attack1} to deal double damage!
+                            """)
+       
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def battle_attack(user, pokecount, hintcount, fighter, enemy):
+    print('works')
+    battle_mode = True
+    while battle_mode == True:
+        if pokecount == 1:
+
+
+
+
+            questions1 = [
+                        {
+                        'type': 'list',
+                        'name': 'fightchoice',
+                        'message': '{}, choose an attack:'.format(user),
+                        'choices': ['Fight', 'Run', 'Hint']
+                        }
+                        ]
+            answers = prompt(questions1)
+            choice2 = answers['fightchoice']
+
+        else:
+
+            questions2 = [
+                        {
+                        'type': 'list',
+                        'name': 'fightchoice',
+                        'message': '{}, choose an attack:'.format(user),
+                        'choices': ['Fight', 'Switch Pokemon','Run', 'Hint']
+                        }
+                        ]
+            answers2 = prompt(questions2)
+            choice2 = answers2['fightchoice']
+
+        if choice2 == 'Hint':
+            print('works too')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################
 
 #Trainer class
 
@@ -55,8 +252,10 @@ class Pokemon:
 
 
 
+############################
 
 #Pokemon character art printer.
+
 
 def pokeart(poke_name):
 	if poke_name == "bulbasaur":
