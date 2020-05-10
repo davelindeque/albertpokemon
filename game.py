@@ -208,7 +208,9 @@ def pokedex_portal():
 
 def attack_choice(poke_range):
     if len(poke_range) == 1:
+        print('You only have one Pokemon.')
         selected = poke_range[0]
+        print('{} selected.'.format(selected.name))
 
     else:
 
@@ -228,7 +230,7 @@ def attack_choice(poke_range):
         if choice2 == 'Back':
             pass
 
-        for i, poke in poke_range:
+        for i, poke in enumerate(poke_range):
             if choice2 == poke.name:
                 selected = pokedex[i]
                 print('')
@@ -236,14 +238,14 @@ def attack_choice(poke_range):
                 return selected
                 break
 
+##############################
 
 
-def battle_attack(att, opp):
+def battle_attack(att, opp, poke_range, wild_range):
     print('works')
     battle_mode = True
-#    attack_choice(pokedex)
     while battle_mode == True:
-        if len(pokedex) == 1:
+        if len(poke_range) == 1:
 
             questions1 = [
                         {
@@ -275,14 +277,14 @@ def battle_attack(att, opp):
             print('')
             print('You got away safely!')
 
-            for i, poke in enumerate(pokedex):
+            for i, poke in enumerate(poke_range):
                 if opp.name == poke.name:
-                    pokedex[i].health = 10
+                    poke_range[i].health = 10
                     break
             battle_mode = False
 
         elif choice2 == 'Switch Pokemon':
-            chosen = attack_choice(pokedex)
+            chosen = attack_choice(poke_range)
 
         elif choice2 == 'Fight':
             opponent_element = opp.element
@@ -327,6 +329,7 @@ def battle_attack(att, opp):
 
             attdamage = outcome[0]
             oppattdamage = outcome[1]
+            old_health = att.health
             
             print('')
             print('{} used {}, dealing {} damage.'.format(att.name, choice3, attdamage))
@@ -334,40 +337,92 @@ def battle_attack(att, opp):
             print('Opposing {} used {}, dealing {}.'.format(opp.name, opponent_attack, oppattdamage))
             print('')
 
-            if len(pokedex) == 1:
-                pokedex[0].health -= oppattdamage
-                userhealth = pokedex[0].health
+            att.health -= oppattdamage
+            if att.health <= 0:
+                att.health = 0
+
+            opp.health -= attdamage
+            if opp.health <= 0:
+                opp.health = 0
+
+            if att.health == 0 and opp.health == 0:
+                print('')
+                print('Winner! You beat {} before they could attack you back.'.format(opp.name))
+                print('')
+                print('{} health: {}'.format(att.name, old_health))
+                print('')
+                print('{} health: {}'.format(opp.name, opp.health))
+                print('')
+                for i, poke in enumerate(poke_range):
+                    if att.name == poke.name:
+                        poke_range(i).health = 10
+                for j, wild in enumerate(wild_range):
+                    if opp.name == poke.name:
+                        wild_range(j).health = 10
+                        poke_range.append(wild_range.pop(j))
+                battle_mode = False
+
+
+
+
+
+
+
+
+
+
 
             else:
-                for i, poke in enumerate(pokedex):
+                print('')
+                print('Score:')
+                print('')
+                print('{} health: {}'.format(att.name, att.health))
+                print('')
+                print('{} health: {}'.format(opp.name, opp.health))
+                print('')
+
+            
+            if att.health == 0 and opp.health > 0:
+                if len(poke_range) == 1:
+                    poke_range = []
+                    print('Winner: {}'.format(opp.name))
+                    battle_mode = False
+
+                else:
+                    for i, poke in enumerate(poke_range):
+                        if att.name == poke.name:
+                            poke_range(i).health = 10
+                            wild_range.append(poke_range.pop(i))
+                        break
+                    for j, wild in enumerate(wild_range):
+                        if opp.name == wild.name:
+                            wild_range(j).health = 10
+                        break
+                    battle_mode = False
+                            
+
+
+
+            elif att.health > 0 and opp.health == 0:
+                for i, poke in enumerate(poke_range):
                     if att.name == poke.name:
-                        pokedex[i].health -= oppattdamage
-                        userhealth = pokedex[0].health
+                        poke_range(i).health = 10
                     break
 
-
-            if len(wild_pokemon) == 1:
-                wild_pokemon[0].health -= attdamage
-                comphealth = wild_pokemon[0].health
-
-                
-
-            else:
-                for j, wild in enumerate(wild_pokemon):
+                for j, wild in enumerate(wild_range):
                     if opp.name == wild.name:
-                        wild_pokemon[j].health -= attdamage
-                        comphealth = wild_pokemon[j].health
+                        wild_range(j).health = 10
+                        poke_range.append(wild_range.pop(j))
+                    break
 
+                print('Winner: {}'.format(att.name))
+                print('')
+                print('Well done {}, you caught {}.'.format(username, opp.name))
+                print('')
 
-           
+                battle_mode = False
 
-            print('')
-            print('Score:')
-            print('')
-            print('{} health: {}'.format(att.name, userhealth))
-            print('')
-            print('{} health: {}'.format(opp.name, comphealth))
-
+    return [poke_range, wild_range]
 
 
 
@@ -381,7 +436,7 @@ def battle_attack(att, opp):
 ##############################
 
 
-def homemenu():
+def homemenu(poke_list, wild_list):
 
 
     step1 = [
@@ -396,28 +451,32 @@ def homemenu():
     answers = prompt(step1)
     choice = answers['step1_choice']
 
-    pokedex_count = len(pokedex)
+    pokedex_count = len(poke_list)
 
     if choice == 'Catch Pokemon':
         print("Let's begin...")
         time.sleep(1)
         print('In order to catch Pokemon, we need to battle!')
         time.sleep(1)
-        opponent = pokemon_content.battle(wild_pokemon)
+        opponent = pokemon_content.battle(wild_list)
 
 
-        if len(pokedex) == 1:
-            chosen = pokedex[0]
+        if len(poke_range) == 1:
+            chosen = poke_list[0]
             print("{}, you currently only have 1 Pokemon, {}.".format(username, chosen.name))
             print("Go get 'em {}!".format(chosen.name))
             print('')
-            battle_attack(chosen, opponent)
+            battle_result = battle_attack(chosen, opponent, poke_list, wild_list)
+            poke_range = battle_result[0]
+            wild_pokemon = battle_result[1]
 
 
 
         else:
             chosen = pokemon_content.attack_choice(pokedex)
-            battle_attack(chosen, opponent)
+            battle_result = battle_attack(chosen, opponent, pokedex, wild_pokemon)
+            pokedex = battle_result[0]
+            wild_pokemon = battle_result[1]
                 
     elif choice == 'Quit':
         print('Thanks for playing {}!'.format(username))
@@ -463,7 +522,7 @@ ____   ___.______________________________ _______________.___._._.
         break
 
 
-    homemenu()
+    homemenu(pokedex, wild_pokemon)
 
 
 
